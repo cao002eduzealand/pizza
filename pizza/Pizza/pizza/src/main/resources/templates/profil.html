@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Min profil</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+<h1>Velkommen, <span th:text="${bruger.navn}"></span>!</h1>
+
+<p><strong>Adresse:</strong> <span th:text="${bruger.adresse}"></span></p>
+<p><strong>Email:</strong> <span th:text="${bruger.email}"></span></p>
+<p><strong>Dine bonuspoint:</strong> <span th:text="${bruger.bonuspoint}"></span></p>
+
+<a href="/pizza">Se pizzamenu</a>
+</body>
+</html>

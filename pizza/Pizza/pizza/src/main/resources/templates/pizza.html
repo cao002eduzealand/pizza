@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizza Menu</title>
+</head>
+<body>
+<h1>Pizza Menu</h1>
+
+<!-- Loop through the list of pizzas passed in the model -->
+<table>
+    <tr th:each="pizza : ${pizzaer}">
+        <td><img th:src="${pizza.imageUrl}" width="100"/></td>
+        <td><span th:text="${pizza.navn}"></span></td>
+        <td><span th:text="${pizza.pris}"></span></td>
+
+
+
+    </tr>
+</table>
+
+
+<a th:href="@{/bruger/{id}(id=${bruger.id})}">Back to Profile</a>
+
+</body>
+</html>

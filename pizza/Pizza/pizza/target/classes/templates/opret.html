@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Opret eller login - Pizza Paradise</title>
+  <meta charset="UTF-8">
+  <style>
+    /* General Body Styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Main Container Styling */
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    /* Header Styling */
+    header {
+      margin-bottom: 30px;
+    }
+
+    header img {
+      width: 200px; /* Adjust size as necessary */
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #333;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.8em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    /* Form Styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    label {
+      font-size: 1em;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+      margin-top: 5px;
+    }
+
+    input[type="submit"], button {
+      background-color: #FF6F61; /* Soft Red */
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover, button:hover {
+      background-color: #FF4C38; /* Darker Red */
+    }
+
+    /* Error Message Styling */
+    p {
+      color: red;
+      font-size: 1em;
+    }
+
+    /* Section Styling */
+    section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form Buttons */
+    .form-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .form-buttons button {
+      width: 48%;
+    }
+
+    /* Responsive Layout */
+    @media (max-width: 768px) {
+      .container {
+        width: 90%;
+      }
+      header img {
+        width: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <img src="https://t3.ftcdn.net/jpg/02/08/40/68/240_F_208406889_hodWRjw2cOX9pKCOR7TZWhgUXWGEbcJ8.jpg" alt="Pizza Paradise Logo">
+    <h1>Pizza Paradise - Bruger</h1>
+  </header>
+
+  <!-- Opret ny bruger -->
+  <section>
+    <h2>Opret ny bruger</h2>
+    <form th:action="@{/bruger/opret}" method="post" th:object="${bruger}">
+
+      <label for="navn">Navn:</label>
+      <input type="text" th:field="*{navn}" id="navn" required><br>
+
+      <label for="password">Password:</label>
+      <input type="text" th:field="*{password}" id="password" required><br>
+
+      <label for="adresse">Adresse:</label>
+      <input type="text" th:field="*{adresse}" id="adresse" required><br>
+
+      <label for="email">Email:</label>
+      <input type="email" th:field="*{email}" id="email" required><br>
+
+      <button type="submit">Opret Bruger</button>
+    </form>
+
+    <p th:if="${errorMessage}" style="color: red;">[[${errorMessage}]]</p>
+  </section>
+
+  <hr>
+
+  <!-- Login sektion -->
+  <section>
+    <h2>Log ind</h2>
+    <form th:action="@{/bruger/login}" method="post">
+
+      <label for="emailLogin">Email:</label>
+      <input type="email" id="emailLogin" name="email" required><br>
+
+      <label for="passwordLogin">Password:</label>
+      <input type="password" id="passwordLogin" name="password" required><br>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p th:if="${errorMessage}" style="color: red;">[[${errorMessage}]]</p>
+  </section>
+</div>
+
+</body>
+</html>
+
