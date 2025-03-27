@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class BrugerService {
 
-    private static Bruger CurrentBruger;
+
     private final BrugerRepository repository;
 
     public BrugerService(BrugerRepository repository) {
@@ -30,12 +30,7 @@ public class BrugerService {
         return repository.findIdByEmail(bruger.getEmail()); // Fetch correct ID
     }
 
-public static void setCurrentBruger(Bruger currentBruger) {
-        CurrentBruger = currentBruger;
-}
-public static Bruger getCurrentBruger() {
-        return CurrentBruger;
-}
+
 
     public Bruger getBrugerById(int id) {
         return repository.findBrugerById(id);

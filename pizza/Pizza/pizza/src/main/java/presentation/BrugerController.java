@@ -2,6 +2,7 @@ package presentation;
 
 import applicationLayer.BrugerService;
 import domain.Bruger;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +24,16 @@ public class BrugerController {
         return "opret"; // returnerer opret.html under templates
     }
 
+
+
     @PostMapping("/opret")
-    public String gemBruger(@ModelAttribute Bruger bruger, Model model) {
+    public String gemBruger(@ModelAttribute Bruger bruger, Model model, HttpSession session) {
         try {
             int brugerId = brugerService.gemBruger(bruger);
+
+            // Store the newly created user in session
+            session.setAttribute("bruger", bruger);
+
             return "redirect:/bruger/" + brugerId;
         } catch (IllegalArgumentException e) {
             model.addAttribute("bruger", new Bruger());
@@ -36,31 +43,49 @@ public class BrugerController {
     }
 
     @PostMapping("/login")
-    public String authenticateUser(@RequestParam String email, @RequestParam String password, Model model) {
+    public String authenticateUser(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) {
         Bruger bruger = brugerService.authenticateUser(email, password); // Validate credentials
-
-        model.addAttribute("bruger", new Bruger());
 
         if (bruger == null) {
             model.addAttribute("errorMessage", "Invalid email or password!"); // Error message if login fails
             return "opret"; // Stay on the same page if authentication fails
         }
 
-        // Redirect to the user's profile page after successful login
-        BrugerService.setCurrentBruger(bruger);
+        // Store the logged-in user in session
+        session.setAttribute("bruger", bruger);
+
         return "redirect:/bruger/" + bruger.getId();
     }
 
 
-    // Til visning af brugerprofil
     @GetMapping("/{id}")
-    public String visBrugerProfil(@PathVariable int id, Model model) {
-        Bruger bruger = brugerService.getBrugerById(id);
-        
-        if (bruger == null) {
-            return "redirect:/bruger/login"; // Redirect if not found
+    public String visBrugerProfil(@PathVariable String id, Model model, HttpSession session) {
+        // Convert the id to an integer (only proceed if valid)
+        int userId;
+        try {
+            userId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            // If invalid ID, redirect to login page
+            return "redirect:/bruger/opret";
         }
+
+        // Get the current user from the session
+        Bruger bruger = (Bruger) session.getAttribute("bruger");
+
+        if (bruger == null || bruger.getId() != userId) {
+            return "redirect:/bruger/opret"; // Redirect to login/signup if session is missing or user is incorrect
+        }
+
         model.addAttribute("bruger", bruger);
-        return "profil"; // returnerer profil.html under templates
+        return "profil"; // Returnerer profil.html under templates
     }
+
+    //logout user
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Clear session data
+        return "redirect:/bruger/opret"; // Redirect to login page after logout
+    }
+
+
 }
