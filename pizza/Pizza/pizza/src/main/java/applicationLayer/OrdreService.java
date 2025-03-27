@@ -2,6 +2,7 @@ package applicationLayer;
 
 import domain.Bruger;
 import domain.Ordre;
+import domain.Pizza;
 import infrastructure.OrdreRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,12 @@ public class OrdreService {
         this.repository = repository;
     }
 
-    public Ordre gemOrdre(Ordre ordre) {
-        return repository.gemOrdre(ordre);
+    public Ordre gemOrdre(Ordre ordre, List<Pizza> cart) {
+        return repository.gemOrdre(ordre, cart);
+    }
+
+    public List<Ordre> getOrdersForUser(int brugerId) {
+        return repository.getOrdersForBruger(brugerId);
     }
 
     public Ordre getOrdreById(int id) {

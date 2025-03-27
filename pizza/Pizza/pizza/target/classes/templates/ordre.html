@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+</head>
+<body>
+<h1>Din Ordre</h1>
+
+<!-- Show cart items -->
+<ul>
+    <li th:each="pizza : ${cart}">
+        <span th:text="${pizza.navn}"></span> -
+        <span th:text="${pizza.pris} + ' DKK'"></span>
+    </li>
+</ul>
+
+<!-- Total Price -->
+<h3>Total: <span th:text="${totalPrice} + ' DKK'"></span></h3>
+
+<!-- Payment Button -->
+<form th:action="@{/pay}" method="post">
+    <button type="submit">Betal</button>
+</form>
+
+</body>
+</html>

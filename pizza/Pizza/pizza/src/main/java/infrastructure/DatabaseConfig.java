@@ -15,7 +15,7 @@ public class DatabaseConfig {
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/pizza_db");
         dataSource.setUsername("root");
-        dataSource.setPassword("rootroot");
+        dataSource.setPassword("root");
         return dataSource;
     }
 

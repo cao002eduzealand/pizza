@@ -20,7 +20,7 @@ public class PizzaService {
     public Pizza gemPizza (Pizza pizza){
         return repository.gemPizza(pizza);
     }
-    public Pizza getPizzaById(int id){
+    public Pizza findPizzaById(int id){
         return repository.findPizzaById(id);
     }
 

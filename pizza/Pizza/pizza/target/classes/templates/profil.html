@@ -59,7 +59,12 @@
 
   <a href="/pizza">Se pizzamenu</a>
 
-  <!-- Logout form -->
+  <a th:href="@{/bruger/{id}/orders(id=${bruger.id})}">
+    <button>View Order History</button>
+  </a>
+
+
+
   <form th:action="@{/bruger/logout}" method="get">
     <button type="submit">Log ud</button>
   </form>

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,8 +35,14 @@ public class PizzaController {
         }
 
         List<Pizza> pizzas = pizzaService.getAllPizzas();
+        List<Pizza> cart = (List<Pizza>) session.getAttribute("cart");
+
+        if (cart == null) {
+            cart = new ArrayList<>();
+        }
         model.addAttribute("pizzaer", pizzas);
         model.addAttribute("bruger", bruger); // Pass user info to HTML
+        model.addAttribute("cart", cart);
         return "pizza"; // Load pizza.html
     }
 
@@ -59,6 +68,23 @@ public class PizzaController {
 
         pizzaService.gemPizza(pizza);
         return "redirect:/pizza";
+    }
+
+    @PostMapping("/pizza/addToCart")
+    public String addToCart(@RequestParam int pizzaId, HttpSession session) {
+        List<Pizza> cart = (List<Pizza>) session.getAttribute("cart");
+
+        if (cart == null) {
+            cart = new ArrayList<>();
+        }
+
+        Pizza pizza = pizzaService.findPizzaById(pizzaId); // Get pizza by ID
+        if (pizza != null) {
+            cart.add(pizza); // Add pizza to cart
+        }
+
+        session.setAttribute("cart", cart); // Save cart in session
+        return "redirect:/pizza"; // Reload page to show updated cart
     }
 }
 

@@ -14,11 +14,26 @@
         <td><span th:text="${pizza.navn}"></span></td>
         <td><span th:text="${pizza.pris}"></span></td>
 
-
+        <td>
+            <form th:action="@{/pizza/addToCart}" method="post">
+                <input type="hidden" name="pizzaId" th:value="${pizza.id}"/>
+                <button type="submit">Add to Cart</button>
+            </form>
+        </td>
 
     </tr>
 </table>
+<hr>
 
+<h2> Your cart</h2>
+<ul>
+    <li th:each="cartPizza : ${cart}">
+        <span th:text="${cartPizza.navn}"></span> -
+        <span th:text="${cartPizza.pris} + ' DKK'"></span>
+    </li>
+</ul>
+
+<a th:href="@{/ordre}"><button>Checkout</button></a>
 
 <a th:href="@{/bruger/{id}(id=${bruger.id})}">Back to Profile</a>
 

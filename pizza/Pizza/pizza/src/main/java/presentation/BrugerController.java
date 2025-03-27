@@ -1,20 +1,26 @@
 package presentation;
 
 import applicationLayer.BrugerService;
+import applicationLayer.OrdreService;
 import domain.Bruger;
+import domain.Ordre;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/bruger")
 public class BrugerController {
 
     private final BrugerService brugerService;
+    private final OrdreService ordreService;
 
-    public BrugerController(BrugerService brugerService) {
+    public BrugerController(BrugerService brugerService, OrdreService ordreService) {
         this.brugerService = brugerService;
+        this.ordreService = ordreService;
     }
 
     // Til oprettelse af bruger
@@ -24,7 +30,16 @@ public class BrugerController {
         return "opret"; // returnerer opret.html under templates
     }
 
+    @GetMapping("/bruger/{id}/orders")
+    public String showOrderHistory(@PathVariable("id") int brugerId, Model model) {
+        // Fetch the user's order history from the OrdreService
+        List<Ordre> orders = ordreService.getOrdersForUser(brugerId);
 
+        // Add the orders to the model
+        model.addAttribute("orders", orders);
+
+        return "orderHistory"; // Load the orderHistory.html view
+    }
 
     @PostMapping("/opret")
     public String gemBruger(@ModelAttribute Bruger bruger, Model model, HttpSession session) {
@@ -41,6 +56,7 @@ public class BrugerController {
             return "opret"; // Stay on the same page if email is taken
         }
     }
+
 
     @PostMapping("/login")
     public String authenticateUser(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) {
