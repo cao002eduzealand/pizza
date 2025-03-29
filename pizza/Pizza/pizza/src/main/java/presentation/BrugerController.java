@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/bruger")
@@ -30,16 +31,16 @@ public class BrugerController {
         return "opret"; // returnerer opret.html under templates
     }
 
-    @GetMapping("/bruger/{id}/orders")
+    @GetMapping("/{id}/orders")
     public String showOrderHistory(@PathVariable("id") int brugerId, Model model) {
-        // Fetch the user's order history from the OrdreService
-        List<Ordre> orders = ordreService.getOrdersForUser(brugerId);
+        List<Map<String, Object>> orders = ordreService.getOrdersForBruger(brugerId);
 
-        // Add the orders to the model
+        Bruger bruger = brugerService.getBrugerById(brugerId);
         model.addAttribute("orders", orders);
-
-        return "orderHistory"; // Load the orderHistory.html view
+        model.addAttribute("bruger", bruger);
+        return "orderHistory"; // Load orderHistory.html
     }
+
 
     @PostMapping("/opret")
     public String gemBruger(@ModelAttribute Bruger bruger, Model model, HttpSession session) {

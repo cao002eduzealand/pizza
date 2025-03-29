@@ -17,9 +17,9 @@
         <th>Order Date</th>
         <th>Total Price</th>
     </tr>
-    <tr th:each="ordre : ${orders}">
-        <td th:text="${ordre.dato}"></td>
-        <td th:text="${ordre.pris} + ' DKK'"></td>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.dato}"></td>
+        <td th:text="${order.pris} + ' DKK'"></td>
     </tr>
 </table>
 

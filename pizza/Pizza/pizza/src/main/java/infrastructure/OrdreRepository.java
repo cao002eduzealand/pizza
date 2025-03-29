@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class OrdreRepository {
@@ -40,11 +41,6 @@ public class OrdreRepository {
         return ordre;
     }
 
-    public List<Ordre> getOrdersForBruger(int brugerId) {
-        String sql = "SELECT * FROM ordre WHERE bruger_id = ?";
-
-        return jdbcTemplate.query(sql, new Object[]{brugerId}, new BeanPropertyRowMapper<>(Ordre.class));
-    }
 
 
 
@@ -62,5 +58,19 @@ public class OrdreRepository {
             String sql = "DELETE FROM ordre WHERE id = ?";
             jdbcTemplate.update(sql, id);
         }
+
+
+
+    public List<Map<String, Object>> findOrdersByBrugerId(int brugerId) {
+        String sql = """
+        SELECT o.id AS order_id, o.dato, o.pris, p.navn AS pizza_name
+        FROM ordre o
+        JOIN ordre_pizza op ON o.id = op.ordre_id
+        JOIN pizza p ON op.pizza_id = p.id
+        WHERE o.bruger_id = ?
+        """;
+
+        return jdbcTemplate.queryForList(sql, brugerId);
+    }
     }
 

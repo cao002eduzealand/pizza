@@ -4,9 +4,12 @@ import domain.Bruger;
 import domain.Ordre;
 import domain.Pizza;
 import infrastructure.OrdreRepository;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrdreService {
@@ -21,8 +24,8 @@ public class OrdreService {
         return repository.gemOrdre(ordre, cart);
     }
 
-    public List<Ordre> getOrdersForUser(int brugerId) {
-        return repository.getOrdersForBruger(brugerId);
+    public List<Map<String, Object>> getOrdersForBruger(int brugerId) {
+        return repository.findOrdersByBrugerId(brugerId);
     }
 
     public Ordre getOrdreById(int id) {
@@ -36,4 +39,7 @@ public class OrdreService {
     public void deleteOrdre(int id) {
         repository.deleteOrdre(id);
     }
+
+
+
 }
